@@ -1,0 +1,224 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+modbus:
+  - name: plc_01
+    type: tcp
+    host: 192.168.1.31
+    port: 502
+
+    binary_sensors:
+      - name: plc_01_s8a
+        slave: 1
+        address: 0
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s8b
+        slave: 1
+        address: 1
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s8c_1
+        slave: 1
+        address: 2
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s8c_2
+        slave: 1
+        address: 3
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s11_1
+        slave: 1
+        address: 4
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s11_2
+        slave: 1
+        address: 5
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s9a
+        slave: 1
+        address: 6
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s9b
+        slave: 1
+        address: 7
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s9e
+        slave: 1
+        address: 8
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s9c
+        slave: 1
+        address: 9
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s9d
+        slave: 1
+        address: 10
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_s9f
+        slave: 1
+        address: 11
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_data_req
+        slave: 1
+        address: 12
+        input_type: discrete_input
+        scan_interval: 1
+      - name: plc_01_eth_flash
+        slave: 1
+        address: 10
+        input_type: coil
+        scan_interval: 1
+      - name: plc_01_door_buzzer
+        slave: 1
+        address: 2
+        input_type: coil
+        scan_interval: 1
+
+    switches:
+      - name: plc_01_door_manual
+        slave: 1
+        address: 1
+        input_type: coil
+        scan_interval: 1
+      - name: plc_01_door_buzzer
+        slave: 1
+        address: 2
+        input_type: coil
+        scan_interval: 1
+      - name: plc_01_water_valve
+        slave: 1
+        address: 3
+        input_type: coil
+        scan_interval: 1
+      - name: plc_01_feed_valve
+        slave: 1
+        address: 4
+        input_type: coil
+        scan_interval: 1
+      - name: plc_01_room_heating
+        slave: 1
+        address: 6
+        input_type: coil
+        scan_interval: 1
+      - name: plc_01_drinker_heating
+        slave: 1
+        address: 7
+        input_type: coil
+        scan_interval: 1
+      - name: plc_01_in_light_manual
+        slave: 1
+        address: 9
+        input_type: coil
+        scan_interval: 1
+
+    sensors:
+      - name: plc_01_in_temp
+        address: 0
+        input_type: input
+        device_class: temperature
+        data_type: uint
+        unit_of_measurement: °C
+        scale: 0.01
+        precision: 2
+        offset: -327.68
+        slave: 1
+        scan_interval: 1
+      - name: plc_01_out_temp
+        address: 1
+        input_type: input
+        device_class: temperature
+        data_type: uint
+        unit_of_measurement: °C
+        scale: 0.01
+        precision: 2
+        offset: -327.68
+        slave: 1
+        scan_interval: 1
+      - name: plc_01_in_hum
+        address: 2
+        input_type: input
+        device_class: humidity
+        data_type: uint
+        unit_of_measurement: "%"
+        scale: 0.01
+        precision: 2
+        slave: 1
+        scan_interval: 1
+      - name: plc_01_out_hum
+        address: 3
+        input_type: input
+        device_class: humidity
+        data_type: uint
+        unit_of_measurement: "%"
+        scale: 0.01
+        precision: 2
+        slave: 1
+        scan_interval: 1
+      - name: plc_01_feed_stat
+        address: 5
+        input_type: input
+        data_type: uint
+        slave: 1
+        scan_interval: 1
+      - name: plc_01_water_stat
+        address: 7
+        input_type: input
+        data_type: uint
+        slave: 1
+        scan_interval: 1
+      - name: plc_01_error_reg_01
+        address: 9
+        input_type: input
+        data_type: uint
+        slave: 1
+        scan_interval: 1
+
+    fans:
+      - name: plc_01_vent
+        address: 5
+        input_type: coil
+        slave: 1
+        scan_interval: 1
+
+    lights:
+      - name: plc_01_in_light
+        address: 8
+        input_type: coil
+        slave: 1
+        scan_interval: 1
+
+    covers:
+      - name: plc_01_door
+        coil: 0
+        slave: 1
+        device_class: door
+        status_register: 4
+        status_register_type: input
+        state_opening: 1
+        state_open: 2
+        state_closing: 3
+        state_closed: 4
+        scan_interval: 1

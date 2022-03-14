@@ -1,0 +1,6 @@
+title: Home
+views:
+  - path: upravene_ui
+    title: Upravené UI
+    cards:
+      - type: "custom:lights-schedule-card"

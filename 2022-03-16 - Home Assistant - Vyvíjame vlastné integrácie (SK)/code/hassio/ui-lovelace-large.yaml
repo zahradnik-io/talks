@@ -1,0 +1,458 @@
+title: Home
+views:
+  - path: plc_01
+    title: PLC 01
+    badges:
+      - entity: sun.sun
+    cards:
+      - type: vertical-stack
+        cards:
+        - type: horizontal-stack
+          cards:
+              # https://github.com/custom-cards/button-card
+            - type: "custom:button-card"
+              color_type: card
+              color: green
+              entity: sensor.plc_01_error_reg_01
+              name: Water tank
+              icon: mdi:water
+              styles:
+                name:
+                  - font-size: 13px
+              state:
+              - value: "unavailable"
+                color: "grey"
+              - operator: template
+                value:  >
+                  [[[ return (entity.state & 3) != 0 ]]]
+                color: red
+                name: >
+                  [[[ 
+                    if ((entity.state & 1) != 0)
+                      return "Water fill error"
+                    else if ((entity.state & 2) != 0)
+                      return "Water sensors"
+                    else
+                      return "Water tank"
+                  ]]]
+              - operator: template
+                value:  >
+                  [[[ return states['sensor.plc_01_water_stat'].state == 1 ]]]
+                color: yellow
+            - type: "custom:button-card"
+              color_type: card
+              color: green
+              entity: sensor.plc_01_error_reg_01
+              name: Feeder
+              icon: mdi:seed
+              styles:
+                name:
+                  - font-size: 13px
+              state:
+              - value: "unavailable"
+                color: "grey"
+              - operator: template
+                value:  >
+                  [[[ return (entity.state & 12) != 0 ]]]
+                color: red
+                name: >
+                  [[[ 
+                    if ((entity.state & 4) != 0)
+                      return "Feeder fill error"
+                    else if ((entity.state & 8) != 0)
+                      return "Feeder sensors"
+                    else
+                      return "Feeder"
+                  ]]]
+              - operator: template
+                value:  >
+                  [[[ return states['sensor.plc_01_feed_stat'].state == 1 ]]]
+                color: yellow
+            - type: "custom:button-card"
+              color_type: card
+              color: green
+              entity: sensor.plc_01_error_reg_01
+              name: Ventilation
+              icon: hass:fan
+              styles:
+                name:
+                  - font-size: 13px
+              state:
+              - value: "unavailable"
+                color: "grey"
+              - operator: template
+                value:  >
+                  [[[ return states['input_boolean.plc_01_ventilation_manual'].state == "on" ]]]
+                color: yellow
+                name: Vent - manual
+              - operator: template
+                value:  >
+                  [[[ return (entity.state & 16) != 0 ]]]
+                color: red
+            - type: "custom:button-card"
+              color_type: card
+              color: green
+              entity: sensor.plc_01_error_reg_01
+              name: Door
+              icon: hass:door-closed
+              styles:
+                name:
+                  - font-size: 13px
+              state:
+              - value: "unavailable"
+                color: "grey"
+              - operator: template
+                value:  >
+                  [[[ return (entity.state & 224) != 0 ]]]
+                color: red
+                name: >
+                  [[[ 
+                    if ((entity.state & 64) != 0)
+                      return "Door sensors"
+                    else if ((entity.state & 128) != 0)
+                      return "Manual switch"
+                    else
+                      return "Door"
+                  ]]]
+              - operator: template
+                value:  >
+                  [[[ return states['switch.plc_01_door_manual'].state == "on" ]]]
+                color: yellow
+                name: Door - manual
+        - type: horizontal-stack
+          cards:
+            - type: "custom:button-card"
+              color_type: card
+              color: green
+              entity: sensor.plc_01_error_reg_01
+              name: Heating
+              icon: mdi:patio-heater
+              styles:
+                name:
+                  - font-size: 13px
+              state:
+              - value: "unavailable"
+                color: "grey"
+              - operator: template
+                value:  >
+                  [[[ return states['input_boolean.plc_01_heating_manual'].state == "on" ]]]
+                color: yellow
+                name: Heating - manual
+              - operator: template
+                value:  >
+                  [[[ return (entity.state & 256) != 0 ]]]
+                color: red
+            - type: "custom:button-card"
+              color_type: card
+              color: green
+              entity: sensor.plc_01_error_reg_01
+              name: Inside light
+              icon: hass:lightbulb
+              styles:
+                name:
+                  - font-size: 13px
+              state:
+              - value: "unavailable"
+                color: "grey"
+              - operator: template
+                value:  >
+                  [[[ return (entity.state & 8192) != 0 ]]]
+                color: red
+              - operator: template
+                value:  >
+                  [[[ return states['switch.plc_01_in_light_manual'].state == "on" ]]]
+                color: yellow
+                name: Inside - manual
+            - type: "custom:button-card"
+              color_type: card
+              color: green
+              entity: sensor.plc_01_error_reg_01
+              name: AM2305 - Inside
+              show_entity_picture: true
+              entity_picture: /local/AM2305_icon.svg
+              styles: 
+                name:
+                  - font-size: 13px
+              state:
+              - value: "unavailable"
+                color: "grey"
+              - operator: template
+                value:  >
+                  [[[ return (entity.state & 1024) != 0 ]]]
+                color: red
+            - type: "custom:button-card"
+              color_type: card
+              color: green
+              entity: sensor.plc_01_error_reg_01
+              name: AM2305 - Outside
+              show_entity_picture: true
+              entity_picture: /local/AM2305_icon.svg
+              styles:
+                name:
+                  - font-size: 13px
+              state:
+              - value: "unavailable"
+                color: "grey"
+              - operator: template
+                value:  >
+                  [[[ return (entity.state & 2048) != 0 ]]]
+                color: red
+      - type: entities
+        show_header_toggle: false
+        entities:
+          - entity: sensor.date_time
+      - type: entities
+        title: Climate
+        show_header_toggle: false
+        entities:
+          - entity: switch.plc_01_room_heating
+            name: Heating
+          - entity: sensor.plc_01_in_temp
+            name: Inside temperature
+          - entity: input_number.plc_01_hvac_target_temp
+            icon: hass:thermometer
+          - entity: input_number.plc_01_temp_hysteresis
+            icon: hass:thermometer
+          - entity: fan.plc_01_vent
+            name: Ventilation
+          - entity: sensor.plc_01_in_hum
+            name: Inside humidity
+          - entity: input_number.plc_01_hvac_target_humidity
+            icon: hass:water-percent
+          - entity: input_number.plc_01_humidity_hysteresis
+            icon: hass:water-percent
+          - entity: sensor.plc_01_out_temp
+            name: Outside temperature
+          - entity: sensor.plc_01_out_hum
+            name: Outside humidity
+      - type: entities
+        title: Feeding
+        show_header_toggle: false
+        entities:
+          - entity: sensor.plc_01_feed_stat
+            name: Feed status
+          - entity: switch.plc_01_feed_valve
+            name: Fill feed
+          - entity: sensor.plc_01_water_stat
+            name: Water status
+          - entity: switch.plc_01_water_valve
+            name: Fill water
+          - entity: switch.plc_01_drinker_heating
+            name: Drinker heating
+          - entity: input_number.plc_01_drinker_heating_threshold
+      - type: entities
+        title: Internal states
+        show_header_toggle: false
+        entities:
+          - entity: binary_sensor.plc_01_s8a
+            name: S8A State
+          - entity: binary_sensor.plc_01_s8b
+            name: S8B State
+          - entity: binary_sensor.plc_01_s8c_1
+            name: S8C-1 State
+          - entity: binary_sensor.plc_01_s8c_2
+            name: S8C-2 State
+          - entity: binary_sensor.plc_01_s11_1
+            name: S11-1 State
+          - entity: binary_sensor.plc_01_s11_2
+            name: S11-2 State
+          - entity: binary_sensor.plc_01_s9a
+            name: S9A State
+          - entity: binary_sensor.plc_01_s9b
+            name: S9B State
+          - entity: binary_sensor.plc_01_s9e
+            name: S9E State
+          - entity: binary_sensor.plc_01_s9c
+            name: S9C State
+          - entity: binary_sensor.plc_01_s9d
+            name: S9D State
+          - entity: binary_sensor.plc_01_s9f
+            name: S9F State
+          - entity: binary_sensor.plc_01_eth_flash
+            name: Ethernet flash
+          - entity: sensor.plc_01_rfid
+            name: RFID data
+      - type: vertical-stack
+        show_header_toggle: false
+        cards:
+          - type: entities
+            title: Door
+            show_header_toggle: false
+            entities:
+            - entity: cover.plc_01_door
+              name: Main door
+            - entity: binary_sensor.plc_01_door_buzzer
+              name: Door buzzer
+            - entity: input_number.plc_01_door_min_out_temp_threshold
+              icon: hass:thermometer
+            - entity: input_boolean.plc_01_door_schedule_by_sunset
+          - type: conditional
+            conditions:
+              - entity: input_boolean.plc_01_door_schedule_by_sunset
+                state: "on"
+            card:
+                type: entities
+                entities:
+                  - entity: input_number.plc_01_door_sunrise_offset
+                  - entity: input_number.plc_01_door_sunset_offset
+          - type: conditional
+            conditions:
+              - entity: input_boolean.plc_01_door_schedule_by_sunset
+                state: "off"
+            card:
+                type: horizontal-stack
+                title: Schedule
+                cards:
+                  - type: entities
+                    title: Open door
+                    show_header_toggle: false
+                    entities:
+                      - entity: input_datetime.plc_01_door_open_mon
+                      - entity: input_datetime.plc_01_door_open_tue
+                      - entity: input_datetime.plc_01_door_open_wed
+                      - entity: input_datetime.plc_01_door_open_thu
+                      - entity: input_datetime.plc_01_door_open_fri
+                      - entity: input_datetime.plc_01_door_open_sat
+                      - entity: input_datetime.plc_01_door_open_sun
+                  - type: entities
+                    title: Close door
+                    show_header_toggle: false
+                    entities:
+                      - entity: input_datetime.plc_01_door_close_mon
+                      - entity: input_datetime.plc_01_door_close_tue
+                      - entity: input_datetime.plc_01_door_close_wed
+                      - entity: input_datetime.plc_01_door_close_thu
+                      - entity: input_datetime.plc_01_door_close_fri
+                      - entity: input_datetime.plc_01_door_close_sat
+                      - entity: input_datetime.plc_01_door_close_sun
+      - type: vertical-stack
+        show_header_toggle: false
+        cards:
+          - type: entities
+            title: Lights
+            show_header_toggle: false
+            entities:
+              - entity: light.plc_01_in_light
+                name: Inside light
+              - entity: input_boolean.plc_01_lights_schedule_by_sun
+          - type: conditional
+            conditions:
+              - entity: input_boolean.plc_01_lights_schedule_by_sun
+                state: "on"
+            card:
+                type: entities
+                title: Sunrise Light Setup
+                entities:
+                  - entity: input_number.plc_01_lights_sunrise_offset
+                  - entity: input_number.plc_01_lights_sunrise_day_extension
+          - type: conditional
+            conditions:
+              - entity: input_boolean.plc_01_lights_schedule_by_sun
+                state: "on"
+            card:
+                type: entities
+                title: Sunset Light Setup
+                entities:
+                  - entity: input_number.plc_01_lights_sunset_offset
+                  - entity: input_number.plc_01_lights_sunset_day_extension
+          - type: conditional
+            conditions:
+              - entity: input_boolean.plc_01_lights_schedule_by_sun
+                state: "off"
+            card:
+                type: vertical-stack
+                title: Sunrise Schedule
+                cards:
+                  - type: entities
+                    entities:
+                      - entity: input_boolean.plc_01_lights_sunrise_schedule_active
+                  - type: horizontal-stack
+                    cards:
+                      - type: entities
+                        title: Turn on lights
+                        show_header_toggle: false
+                        entities:
+                          - entity: input_datetime.plc_01_sunrise_turn_on_lights_mon
+                          - entity: input_datetime.plc_01_sunrise_turn_on_lights_tue
+                          - entity: input_datetime.plc_01_sunrise_turn_on_lights_wed
+                          - entity: input_datetime.plc_01_sunrise_turn_on_lights_thu
+                          - entity: input_datetime.plc_01_sunrise_turn_on_lights_fri
+                          - entity: input_datetime.plc_01_sunrise_turn_on_lights_sat
+                          - entity: input_datetime.plc_01_sunrise_turn_on_lights_sun
+                      - type: entities
+                        title: Turn off lights
+                        show_header_toggle: false
+                        entities:
+                          - entity: input_datetime.plc_01_sunrise_turn_off_lights_mon
+                          - entity: input_datetime.plc_01_sunrise_turn_off_lights_tue
+                          - entity: input_datetime.plc_01_sunrise_turn_off_lights_wed
+                          - entity: input_datetime.plc_01_sunrise_turn_off_lights_thu
+                          - entity: input_datetime.plc_01_sunrise_turn_off_lights_fri
+                          - entity: input_datetime.plc_01_sunrise_turn_off_lights_sat
+                          - entity: input_datetime.plc_01_sunrise_turn_off_lights_sun
+          - type: conditional
+            conditions:
+              - entity: input_boolean.plc_01_lights_schedule_by_sun
+                state: "off"
+            card:
+                type: horizontal-stack
+                title: Sunset Schedule
+                cards:
+                  - type: entities
+                    title: Turn on lights
+                    show_header_toggle: false
+                    entities:
+                      - entity: input_datetime.plc_01_sunset_turn_on_lights_mon
+                      - entity: input_datetime.plc_01_sunset_turn_on_lights_tue
+                      - entity: input_datetime.plc_01_sunset_turn_on_lights_wed
+                      - entity: input_datetime.plc_01_sunset_turn_on_lights_thu
+                      - entity: input_datetime.plc_01_sunset_turn_on_lights_fri
+                      - entity: input_datetime.plc_01_sunset_turn_on_lights_sat
+                      - entity: input_datetime.plc_01_sunset_turn_on_lights_sun
+                  - type: entities
+                    title: Turn off lights
+                    show_header_toggle: false
+                    entities:
+                      - entity: input_datetime.plc_01_sunset_turn_off_lights_mon
+                      - entity: input_datetime.plc_01_sunset_turn_off_lights_tue
+                      - entity: input_datetime.plc_01_sunset_turn_off_lights_wed
+                      - entity: input_datetime.plc_01_sunset_turn_off_lights_thu
+                      - entity: input_datetime.plc_01_sunset_turn_off_lights_fri
+                      - entity: input_datetime.plc_01_sunset_turn_off_lights_sat
+                      - entity: input_datetime.plc_01_sunset_turn_off_lights_sun
+      - type: entities
+        title: PLC Timeouts
+        show_header_toggle: false
+        entities:
+          - entity: input_number.plc_01_feed_timeout
+            icon: mdi:seed
+          - entity: input_number.plc_01_water_fill_timeout
+            icon: mdi:water
+          - entity: input_number.plc_01_door_close_timeout
+            icon: hass:door-closed
+          - entity: input_number.plc_01_temp_check_timeout
+            icon: hass:thermometer
+          - entity: input_number.plc_01_humidity_check_timeout
+            icon: hass:water-percent
+      - type: entities
+        title: Manual override
+        show_header_toggle: false
+        entities:
+          - entity: switch.plc_01_door_manual
+            name: Door
+            icon: hass:door-closed
+          - entity: input_number.plc_01_door_manual_disable_timeout
+          - entity: switch.plc_01_in_light_manual
+            name: Inside light
+            icon: hass:lightbulb
+          - entity: input_boolean.plc_01_heating_manual
+            icon: hass:thermostat
+          - entity: input_boolean.plc_01_drinker_heating_manual
+            icon: hass:thermostat
+          - entity: input_boolean.plc_01_ventilation_manual
+            icon: hass:fan
+          - entity: input_boolean.plc_01_water_fill_manual
+            icon: mdi:water
+          - entity: input_boolean.plc_01_feeding_manual
+            icon: mdi:seed
+      - type: "custom:lights-schedule-card"

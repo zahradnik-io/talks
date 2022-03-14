@@ -1,0 +1,16 @@
+{
+  "domain": "namakanyden",
+  "name": "Namakan\u00fd de\u0148",
+  "config_flow": false,
+  "documentation": "https://www.home-assistant.io/integrations/namakanyden",
+  "requirements": [],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": [
+    "@vzahradnik"
+  ],
+  "iot_class": "local_polling",
+  "version": "1.0.0"
+}
